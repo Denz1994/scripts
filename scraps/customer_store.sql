@@ -1,28 +1,44 @@
-CREATE TABLE `Customer_Store`.`cart`
-(
- `customer_id` int NOT NULL ,
- `item_id`     int NOT NULL ,
- `total_cost`  float NOT NULL ,
-
-PRIMARY KEY (`customer_id`, `item_id`),
-KEY `FK_1` (`customer_id`),
-CONSTRAINT `FK_1` FOREIGN KEY `FK_1` (`customer_id`) REFERENCES `Customer_Store`.`customer` (`customer_id`),
-KEY `FK_2` (`item_id`),
-CONSTRAINT `FK_2` FOREIGN KEY `FK_2` (`item_id`) REFERENCES `Customer_Store`.`item` (`item_id`)
-);
-
 CREATE TABLE `Customer_Store`.`customer`
 (
- `customer_id` int NOT NULL ,
+ `customer_email` varchar(255) NOT NULL ,
+ `name`           varchar(255) NOT NULL ,
 
-PRIMARY KEY (`customer_id`)
+PRIMARY KEY (`customer_email`)
 );
 
-CREATE TABLE `Customer_Store`.`item`
+CREATE TABLE `Customer_Store`.`order`
 (
- `item_id` int NOT NULL ,
- `name`    text NOT NULL ,
- `cost`    float NOT NULL ,
+ `order_id`       int NOT NULL ,
+ `customer_email` varchar(255) NOT NULL ,
+ `details`        text NULL ,
+ `date`           datetime NOT NULL ,
+ `total_amount`   float NOT NULL ,
 
-PRIMARY KEY (`item_id`)
+PRIMARY KEY (`order_id`, `customer_email`),
+KEY `FK_1` (`customer_email`),
+CONSTRAINT `FK_3` FOREIGN KEY `FK_1` (`customer_email`) REFERENCES `Customer_Store`.`customer` (`customer_email`)
+);
+
+CREATE TABLE `Customer_Store`.`product`
+(
+ `product_id`  int NOT NULL ,
+ `name`        varchar(255) NOT NULL ,
+ `description` text NOT NULL ,
+ `stock`       int NOT NULL ,
+ `price`       float NOT NULL ,
+
+PRIMARY KEY (`product_id`)
+);
+
+CREATE TABLE `Customer_Store`.`product_order`
+(
+ `product_id`     int NOT NULL ,
+ `order_id`       int NOT NULL ,
+ `customer_email` varchar(255) NOT NULL ,
+
+PRIMARY KEY (`product_id`, `order_id`, `customer_email`),
+KEY `FK_1` (`product_id`),
+CONSTRAINT `FK_1` FOREIGN KEY `FK_1` (`product_id`) REFERENCES `Customer_Store`.`product` (`product_id`),
+KEY `FK_2` (`order_id`, `customer_email`),
+CONSTRAINT `FK_2` FOREIGN KEY `FK_2` (`order_id`, `customer_email`) REFERENCES `Customer_Store`.`order` (`order_id`, `customer_email`)
 );
