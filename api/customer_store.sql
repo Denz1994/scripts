@@ -2,9 +2,21 @@ CREATE TABLE `Customer_Store`.`customer`
 (
  `customer_email` varchar(255) NOT NULL ,
  `name`           varchar(255) NOT NULL ,
+ `payment_method_id` tinyInt NOT NULL UNIQUE
 
 PRIMARY KEY (`customer_email`)
+FOREIGN KEY (`payment_method_id`) REFERENCES `Customer_Store`.`payment_method` (`payment_method_id`)
 );
+
+CREATE TABLE `Customer_Store`.`payment_method`
+(
+ `payment_method_id` int NOT NULL UNIQUE,
+ `name` varchar(45) NOT NULL UNIQUE
+
+PRIMARY KEY (`payment_method_id`)
+
+)
+
 
 CREATE TABLE `Customer_Store`.`order`
 (
@@ -29,6 +41,7 @@ CREATE TABLE `Customer_Store`.`product`
 
 PRIMARY KEY (`product_id`)
 );
+
 
 CREATE TABLE `Customer_Store`.`product_order`
 (
